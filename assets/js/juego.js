@@ -90,6 +90,13 @@ btnPedir.addEventListener('click', () => {//callback
     const imgCarta = document.createElement('img');
     imgCarta.src = `assets/cartas/${ carta }.png`;// 3H, JD
     imgCarta.classList.add('carta');
-
     divCartasJugador.append ( imgCarta );
+
+    if ( puntosJugador > 21 ){
+        console.warn('Lo siento mucho, perdiste');
+        btnPedir.disabled = true;
+    } else if ( puntosJugador === 21){
+        console.warn(' 21, genial')
+        btnPedir.disabled = true;
+    }
 });
