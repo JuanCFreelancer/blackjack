@@ -9,6 +9,16 @@ let deck         = [];
 const tipos      = ['C','D','H','S'];
 const especiales = ['A','J','Q','K'];
 
+let puntosJugador    = 0,
+    puntosComputadora = 0;
+
+
+// Referencias del HTML
+
+const btnPedir         = document.querySelector('#btnPedir');
+const divCartasJugador = document.querySelector('#jugador-cartas');
+const puntosHTML       = document.querySelectorAll( 'small');
+
 
 // Esta funcion crea una nueva deck o nueva baraja
 const crearDeck = () => {
@@ -42,9 +52,6 @@ const pedirCarta = () => {
     }
     
     const carta = deck.pop();//pop() El método pop() elimina el último elemento de un array y lo devuelve. Este método cambia la longitud del array
-
-    console.log(deck);
-    console.log(carta);// carta debe ser de la baraja
     return carta;
 }
 
@@ -69,6 +76,20 @@ const valorCarta = ( carta ) => {
             : valor * 1;
 }
 
-const valor = valorCarta(pedirCarta());
 
-console.log({valor})
+// Eventos
+
+btnPedir.addEventListener('click', () => {//callback
+
+    const carta = pedirCarta();
+
+    puntosJugador = puntosJugador + valorCarta( carta );
+    puntosHTML[0].innerText = puntosJugador;
+
+    // <!-- <img class="carta" src="assets/cartas/2C.png"> -->
+    const imgCarta = document.createElement('img');
+    imgCarta.src = `assets/cartas/${ carta }.png`;// 3H, JD
+    imgCarta.classList.add('carta');
+
+    divCartasJugador.append ( imgCarta );
+});
