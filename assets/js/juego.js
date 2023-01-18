@@ -15,8 +15,14 @@ let puntosJugador    = 0,
 
 // Referencias del HTML
 
-const btnPedir         = document.querySelector('#btnPedir');
-const divCartasJugador = document.querySelector('#jugador-cartas');
+const btnPedir   = document.querySelector('#btnPedir');
+const btnDetener = document.querySelector('#btnDetener');
+
+
+const divCartasJugador     = document.querySelector('#jugador-cartas');
+const divCartasComputadora = document.querySelector('#computadora-cartas');
+
+
 const puntosHTML       = document.querySelectorAll( 'small');
 
 
@@ -55,8 +61,6 @@ const pedirCarta = () => {
     return carta;
 }
 
-//pedirCarta();  
-
 const valorCarta = ( carta ) => {
 
     const valor = carta.substring(0, carta.length - 1);/*Devuelve el subconjunto de una cadena basado en la posición inicial especificada. Si la entrada es una cadena de caracteres, la posición inicial y el número de caracteres extraídos se basan en caracteres, y no en bytes, de modo tal que los caracteres de varios bytes se cuentan como si fueran simples.*/
@@ -77,6 +81,31 @@ const valorCarta = ( carta ) => {
 }
 
 
+
+// Turno de la computadora
+    const turnoComputadora = ( puntosMinimos ) => {
+    
+    do{    
+    const carta = pedirCarta();
+
+    puntosComputadora = puntosComputadora + valorCarta( carta );
+    puntosHTML[1].innerText = puntosComputadora;
+
+    // <!-- <img class="carta" src="assets/cartas/2C.png"> -->
+    const imgCarta = document.createElement('img');
+    imgCarta.src = `assets/cartas/${ carta }.png`;// 3H, JD
+    imgCarta.classList.add('carta');
+    divCartasComputadora.append ( imgCarta );
+
+    if( puntosMinimos > 21 ){
+        break;
+    }
+
+    } while( (puntosComputadora < puntosMinimos) && (puntosMinimos <= 21));
+
+    }
+
+
 // Eventos
 
 btnPedir.addEventListener('click', () => {//callback
@@ -94,9 +123,21 @@ btnPedir.addEventListener('click', () => {//callback
 
     if ( puntosJugador > 21 ){
         console.warn('Lo siento mucho, perdiste');
-        btnPedir.disabled = true;
+        btnPedir.disabled   = true;
+        btnDetener.disabled = true;
+        turnoComputadora( puntosJugador);
     } else if ( puntosJugador === 21){
         console.warn(' 21, genial')
-        btnPedir.disabled = true;
+        btnPedir.disabled   = true;
+        btnDetener.disabled = true;
+        turnoComputadora( puntosJugador);
     }
+});
+
+//Boton Deter
+
+btnDetener.addEventListener('click', () =>{
+    btnPedir.disabled   = true;
+    btnDetener.disabled = true;
+    turnoComputadora( puntosJugador );
 });
